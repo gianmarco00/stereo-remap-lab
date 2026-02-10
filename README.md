@@ -85,7 +85,7 @@ stereo-remap-lab/
 ![Right before remap](docs/assets/right_before.png)
 ![Right after remap](docs/assets/right_after.png)
 ![Valid GT mask](docs/assets/valid_gt.png)
-![Valid after-remap mask](docs/assets/valid_after.png)
+
 
 ### Stereo fusion
 ![Anaglyph before](docs/assets/anaglyph_before.png)
