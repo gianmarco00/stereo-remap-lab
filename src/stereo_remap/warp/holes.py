@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import numpy as np
 
-
 ArrayF = np.ndarray
 
 
@@ -79,10 +78,12 @@ def diffusion_fill_holes(image: ArrayF, hole_mask: np.ndarray, iterations: int =
     out[np.isnan(out)] = 0.0
 
     for _ in range(max(iterations, 0)):
-        up = np.roll(out, shift=1, axis=0)
-        down = np.roll(out, shift=-1, axis=0)
-        left = np.roll(out, shift=1, axis=1)
-        right = np.roll(out, shift=-1, axis=1)
+        # Pad with edge replication to avoid circular wrap-around artifacts.
+        padded = np.pad(out, ((1, 1), (1, 1), (0, 0)), mode="edge")
+        up = padded[:-2, 1:-1]
+        down = padded[2:, 1:-1]
+        left = padded[1:-1, :-2]
+        right = padded[1:-1, 2:]
         avg = 0.25 * (up + down + left + right)
         out[holes] = avg[holes]
 

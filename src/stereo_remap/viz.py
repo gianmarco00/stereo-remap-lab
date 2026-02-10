@@ -4,23 +4,22 @@ from __future__ import annotations
 
 import numpy as np
 
-
 ArrayF = np.ndarray
 
 
 def make_anaglyph(left: ArrayF, right: ArrayF) -> ArrayF:
     """Build a red-cyan anaglyph from two RGB images."""
-    l = np.asarray(left, dtype=np.float32)
-    r = np.asarray(right, dtype=np.float32)
-    if l.shape != r.shape:
+    left_arr = np.asarray(left, dtype=np.float32)
+    right_arr = np.asarray(right, dtype=np.float32)
+    if left_arr.shape != right_arr.shape:
         raise ValueError("left and right must have the same shape")
-    if l.ndim != 3 or l.shape[-1] != 3:
+    if left_arr.ndim != 3 or left_arr.shape[-1] != 3:
         raise ValueError("anaglyph expects HxWx3 images")
 
-    out = np.empty_like(l)
-    out[..., 0] = l[..., 0]
-    out[..., 1] = r[..., 1]
-    out[..., 2] = r[..., 2]
+    out = np.empty_like(left_arr)
+    out[..., 0] = left_arr[..., 0]
+    out[..., 1] = right_arr[..., 1]
+    out[..., 2] = right_arr[..., 2]
     return np.clip(out, 0.0, 1.0)
 
 
@@ -53,3 +52,25 @@ def amplified_abs_diff(reference: ArrayF, estimate: ArrayF, gain: float = 6.0) -
         diff = diff.mean(axis=-1)
     diff = np.clip(gain * diff, 0.0, 1.0)
     return np.stack([diff, diff, diff], axis=-1)
+
+
+def mask_to_rgb(mask: np.ndarray) -> ArrayF:
+    """Convert a boolean mask into a black/white RGB image."""
+    m = np.asarray(mask, dtype=bool).astype(np.float32)
+    return np.stack([m, m, m], axis=-1)
+
+
+def apply_invalid_overlay(
+    image: ArrayF,
+    valid_mask: np.ndarray,
+    invalid_color: tuple[float, float, float] = (0.07, 0.07, 0.07),
+) -> ArrayF:
+    """Paint invalid pixels with a neutral overlay color."""
+    img = np.asarray(image, dtype=np.float32).copy()
+    valid = np.asarray(valid_mask, dtype=bool)
+    if img.shape[:2] != valid.shape:
+        raise ValueError("valid_mask must match image height and width")
+    if img.ndim != 3 or img.shape[-1] != 3:
+        raise ValueError("image must be HxWx3")
+    img[~valid] = np.asarray(invalid_color, dtype=np.float32)
+    return np.clip(img, 0.0, 1.0)

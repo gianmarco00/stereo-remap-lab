@@ -36,6 +36,14 @@ python scripts/benchmark.py
 
 `make_showcase.py` writes outputs to `artifacts/showcase/` and copies committed preview assets to `docs/assets/`.
 
+## How to read the results
+- `left.png`, `right_before.png`, `right_after.png` are standard RGB images of the same scene.
+- `right_before.png` should visually match `right_gt.png` in valid regions (high PSNR confirms this).
+- `right_after.png` should show stronger horizontal shifts than `right_before.png` because disparity was remapped.
+- `disp_before.png` and `disp_after.png` are false-color disparity visualizations (they are not scene colors).
+- `anaglyph_*` images encode stereo fusion: red channel from left, green/blue from right.
+- `layered_*_nans.png` marks disocclusion holes in magenta; `layered_*_filled.png` shows hole-filled outputs.
+
 ## Repository layout
 ```text
 stereo-remap-lab/
@@ -74,7 +82,10 @@ stereo-remap-lab/
 ### Inputs/outputs
 ![Left view](docs/assets/left.png)
 ![Right GT](docs/assets/right_gt.png)
+![Right before remap](docs/assets/right_before.png)
 ![Right after remap](docs/assets/right_after.png)
+![Valid GT mask](docs/assets/valid_gt.png)
+![Valid after-remap mask](docs/assets/valid_after.png)
 
 ### Stereo fusion
 ![Anaglyph before](docs/assets/anaglyph_before.png)
@@ -84,3 +95,12 @@ stereo-remap-lab/
 ![Disparity before](docs/assets/disp_before.png)
 ![Disparity after](docs/assets/disp_after.png)
 ![Amplified absolute error](docs/assets/diff_gt_vs_after.png)
+
+### Layered occlusion and filling
+![Layered left](docs/assets/layered_left.png)
+![Layered holes before](docs/assets/layered_holes_before.png)
+![Layered holes after](docs/assets/layered_holes_after.png)
+![Layered forward before fill](docs/assets/layered_right_before_nans.png)
+![Layered before filled](docs/assets/layered_right_before_filled.png)
+![Layered forward after fill](docs/assets/layered_right_after_nans.png)
+![Layered after filled](docs/assets/layered_right_after_filled.png)

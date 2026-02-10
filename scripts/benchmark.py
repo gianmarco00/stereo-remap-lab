@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 import sys
 import time
+from pathlib import Path
 
 # Allow running directly from a clone without editable install.
 if __package__ is None or __package__ == "":

@@ -10,8 +10,25 @@ from stereo_remap.geometry import (
     sample_row_bilinear,
 )
 
-
 ArrayF = np.ndarray
+
+
+def backward_valid_mask_from_disparity(disparity: ArrayF) -> np.ndarray:
+    """Compute valid right-view pixels implied by monotonic left->right mapping."""
+    disp = np.asarray(disparity, dtype=np.float32)
+    if disp.ndim != 2:
+        raise ValueError("disparity must be HxW")
+
+    height, width = disp.shape
+    x_right = np.arange(width, dtype=np.float32)
+    valid = np.zeros((height, width), dtype=bool)
+
+    for y in range(height):
+        xr_from_xl = right_coords_from_disparity(disp[y])
+        lo = float(min(xr_from_xl[0], xr_from_xl[-1]))
+        hi = float(max(xr_from_xl[0], xr_from_xl[-1]))
+        valid[y] = (x_right >= lo) & (x_right <= hi)
+    return valid
 
 
 def backward_warp_monotonic(left: ArrayF, disparity: ArrayF) -> ArrayF:
