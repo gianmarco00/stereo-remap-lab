@@ -37,7 +37,10 @@ class LayeredRectPipelineResult:
     hole_mask_after: np.ndarray
 
 
-def run_slanted_plane_pipeline(scale: float = 1.20, shift: float = 0.50) -> SlantedPlanePipelineResult:
+def run_slanted_plane_pipeline(
+    scale: float = 1.20,
+    shift: float = 0.50,
+) -> SlantedPlanePipelineResult:
     """Run monotonic slanted-plane remap showcase pipeline."""
     scene = SlantedPlaneScene()
     left, disp_before, right_gt = scene.render()
@@ -56,17 +59,27 @@ def run_slanted_plane_pipeline(scale: float = 1.20, shift: float = 0.50) -> Slan
     )
 
 
-def run_layered_rect_pipeline(popout_delta: float = 2.50) -> LayeredRectPipelineResult:
+def run_layered_rect_pipeline(
+    popout_delta: float = 2.50,
+) -> LayeredRectPipelineResult:
     """Run occlusion-heavy layered-rectangle pipeline with hole filling."""
     scene = LayeredRectScene()
     left, disp_before, _ = scene.render()
 
     right_before_nan, hole_before = forward_zbuffer_warp(left, disp_before)
-    right_before = diffusion_fill_holes(rowwise_nearest_fill(right_before_nan), hole_before, iterations=16)
+    right_before = diffusion_fill_holes(
+        rowwise_nearest_fill(right_before_nan),
+        hole_before,
+        iterations=16,
+    )
 
     disp_after = object_popout(disp_before, scene.foreground_mask(), delta=popout_delta)
     right_after_nan, hole_after = forward_zbuffer_warp(left, disp_after)
-    right_after = diffusion_fill_holes(rowwise_nearest_fill(right_after_nan), hole_after, iterations=16)
+    right_after = diffusion_fill_holes(
+        rowwise_nearest_fill(right_after_nan),
+        hole_after,
+        iterations=16,
+    )
 
     return LayeredRectPipelineResult(
         left=left,

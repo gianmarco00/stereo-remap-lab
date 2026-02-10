@@ -4,7 +4,11 @@ from __future__ import annotations
 
 import numpy as np
 
-from stereo_remap.geometry import invert_monotonic_mapping, right_coords_from_disparity, sample_row_bilinear
+from stereo_remap.geometry import (
+    invert_monotonic_mapping,
+    right_coords_from_disparity,
+    sample_row_bilinear,
+)
 
 
 ArrayF = np.ndarray

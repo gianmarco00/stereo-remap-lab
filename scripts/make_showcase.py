@@ -11,7 +11,12 @@ import numpy as np
 from stereo_remap.io import ensure_dir, write_image
 from stereo_remap.metrics import l1_error, psnr
 from stereo_remap.pipeline import run_slanted_plane_pipeline
-from stereo_remap.viz import amplified_abs_diff, disparity_to_rgb, make_anaglyph, normalize_disparity
+from stereo_remap.viz import (
+    amplified_abs_diff,
+    disparity_to_rgb,
+    make_anaglyph,
+    normalize_disparity,
+)
 
 
 def main() -> None:
