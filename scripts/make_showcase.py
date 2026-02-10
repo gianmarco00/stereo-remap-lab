@@ -3,10 +3,17 @@
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 import shutil
 
 import numpy as np
+
+# Allow running directly from a clone without editable install.
+if __package__ is None or __package__ == "":
+    _SRC_DIR = Path(__file__).resolve().parents[1] / "src"
+    if str(_SRC_DIR) not in sys.path:
+        sys.path.insert(0, str(_SRC_DIR))
 
 from stereo_remap.io import ensure_dir, write_image
 from stereo_remap.metrics import l1_error, psnr

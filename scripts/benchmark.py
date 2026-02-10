@@ -4,7 +4,15 @@
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
+import sys
 import time
+
+# Allow running directly from a clone without editable install.
+if __package__ is None or __package__ == "":
+    _SRC_DIR = Path(__file__).resolve().parents[1] / "src"
+    if str(_SRC_DIR) not in sys.path:
+        sys.path.insert(0, str(_SRC_DIR))
 
 from stereo_remap.pipeline import run_layered_rect_pipeline, run_slanted_plane_pipeline
 from stereo_remap.synthetic import LayeredRectScene, SlantedPlaneScene
