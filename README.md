@@ -96,11 +96,3 @@ stereo-remap-lab/
 ![Disparity after](docs/assets/disp_after.png)
 ![Amplified absolute error](docs/assets/diff_gt_vs_after.png)
 
-### Layered occlusion and filling
-![Layered left](docs/assets/layered_left.png)
-![Layered holes before](docs/assets/layered_holes_before.png)
-![Layered holes after](docs/assets/layered_holes_after.png)
-![Layered forward before fill](docs/assets/layered_right_before_nans.png)
-![Layered before filled](docs/assets/layered_right_before_filled.png)
-![Layered forward after fill](docs/assets/layered_right_after_nans.png)
-![Layered after filled](docs/assets/layered_right_after_filled.png)
